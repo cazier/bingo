@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    <title>Bingo!</title>
+
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/journal/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}" crossorigin="anonymous">
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+</head>
+
+<body>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <nav class="navbar navbar-expand-lg navbar-light bg-light">
+                    <a class="navbar-brand" href="#">Bingo!</a>
+                </nav>
+                <hr>
+                <div>
+                    <div style="margin-left: auto; margin-right: auto;" id="callout">&nbsp;</div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div>
+                    <table>
+                        <tr>
+                            <td>
+                                <button type="button" style="margin-left: auto; margin-right: auto;"
+                                    class="btn btn-success" id="new">New Game</button>
+                            </td>
+                            <td>
+                                <button type="button" style="margin-left: auto; margin-right: auto;"
+                                    class="btn btn-primary" id="call">Call Number</button>
+
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+            integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+            crossorigin="anonymous"></script>
+        <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+            integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+            crossorigin="anonymous"></script>
+        <script>
+            var socket = io('http://' + document.domain + ':' + location.port);
+
+            $('button').click(function (event) {
+                if (this.id != '') {
+                    socket.emit(this.id);
+                } else {
+                    $(this).toggleClass("btn-dark");
+                };
+            })
+
+            socket.on('call', function (message) {
+                $('#callout').text(message.callout);
+            });
+
+            socket.on('new', function (message) {
+                window.location.reload(true);
+            });
+        </script>
+</body>
+
+</html>
