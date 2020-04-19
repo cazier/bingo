@@ -10,6 +10,7 @@ WORKDIR /home/bingo/app
 
 RUN python3 -m pip install --upgrade pip
 RUN python3 -m pip install -r requirements.txt
+RUN python3 -m pip install gunicorn
 
 RUN apk add --no-cache tini
 
@@ -17,4 +18,4 @@ ENTRYPOINT ["/sbin/tini", "--"]
 
 EXPOSE 5000
 
-CMD [ "/usr/bin/python3", "/home/bingo/app/app.py" ]
+CMD [ "gunicorn", "app:app", "--worker-class", "eventlet", "-w", "1", "--bind", "0.0.0.0:5000" ]
