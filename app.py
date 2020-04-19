@@ -1,4 +1,4 @@
-from flask import Flask, render_template, url_for, request, abort
+from flask import Flask, render_template, url_for, request, abort, session
 import flask_socketio
 
 from typing import Iterable
@@ -49,7 +49,7 @@ def index():
 @app.route("/play", methods=["GET", "POST"])
 def play():
     if request.method == "POST":
-        if (host := request.form.get("host", False)) :
+        if (host := request.form.get(key="host", default=False, type=bool)) :
             code = generate_room_code()
 
             GAMES[code] = Bingo(code=code)
@@ -64,6 +64,19 @@ def play():
 
         else:
             return abort(500)
+
+        session["host"] = host
+        session["code"] = code
+
+    elif request.method == "GET":
+        host = session.get("host")
+        code = session.get("code")
+
+        if code not in GAMES.keys():
+            return render_template(
+                template_name_or_list="index.html",
+                errors="That's room no longer exists. Please make a new one!",
+            )
 
     return render_template(
         template_name_or_list="play.html", game=GAMES[code], host=host
