@@ -22,7 +22,7 @@
                 </nav>
                 <hr>
                 <div>
-                    <div style="margin-left: auto; margin-right: auto;" id="callout">&nbsp;</div>
+                    <h2 style="margin-left: auto; margin-right: auto; text-align: center;" id="callout">&nbsp;</h2>
                 </div>
                 <div>
                     <table class="table">
@@ -57,12 +57,21 @@
         <div class="row">
             <div class="col-md-12 text-center">
                 <div>
-                    <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-success"
+                    <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-danger"
                         id="new">New Game</button>
                     &nbsp;
-                    <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-primary"
-                        id="call">Call Number</button>
+                    <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-warning"
+                        id="call">Call
+                        Number</button>
+                    &nbsp;
+                    <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-success"
+                        id="check">Check Numbers</button>
                 </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 text-center">
+                <div id="checks">&nbsp;</div>
             </div>
         </div>
         {% endif %}
@@ -89,6 +98,10 @@
 
             socket.on('call', function (message) {
                 $('#callout').text(message.callout);
+            });
+
+            socket.on('check', function (message) {
+                $('#checks').text(message.numbers);
             });
 
             socket.on('new', function (message) {
