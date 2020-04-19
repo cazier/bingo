@@ -1,13 +1,17 @@
 from flask import Flask, render_template, url_for, request, abort, session
 import flask_socketio
 
+import os
+
 from typing import Iterable
 from random import shuffle, sample
 from string import ascii_uppercase
 
 app = Flask(__name__)
-app.config["SECRET_KEY"] = "SocketSecret!"
-app.config["DEBUG"] = True
+app.config["SECRET_KEY"] = os.getenv(
+    key="SECRET_KEY", default="correctbatteryhorsestaple"
+)
+app.config["DEBUG"] = os.getenv(key="DEBUG_APP", default=False)
 socketio = flask_socketio.SocketIO(app)
 
 GAMES = dict()
@@ -24,6 +28,7 @@ class Bingo(object):
 
         self.numbers = [(l, n) for l in self.boards.keys() for n in self.boards[l]]
         shuffle(self.numbers)
+        self.callouts = self.numbers[:]
 
         self.players: set = set()
 
@@ -38,7 +43,16 @@ class Bingo(object):
         return gen
 
     def call_number(self) -> str:
-        return "".join({str(i) for i in self.numbers.pop()})
+        return "-".join((str(i) for i in self.numbers.pop()))
+
+    def check_answers(self) -> str:
+        return ", ".join(
+            [
+                "-".join((str(k) for k in i))
+                for i in self.callouts
+                if i not in self.numbers
+            ][::-1]
+        )
 
 
 @app.route("/", methods=["GET"])
@@ -87,6 +101,12 @@ def play():
 def call():
     code = rooms(request=request)
     socketio.emit("call", {"callout": GAMES[code].call_number()}, room=code)
+
+
+@socketio.on("check")
+def check():
+    code = rooms(request=request)
+    socketio.emit("check", {"numbers": GAMES[code].check_answers()}, room=code)
 
 
 @socketio.on("new")
