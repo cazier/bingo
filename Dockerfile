@@ -18,3 +18,4 @@ ENTRYPOINT ["/sbin/tini", "--"]
 EXPOSE 5000
 
 CMD [ "/usr/bin/python3", "/home/bingo/app/app.py" ]
+
