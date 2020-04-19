@@ -75,7 +75,7 @@ def play():
         if code not in GAMES.keys():
             return render_template(
                 template_name_or_list="index.html",
-                errors="That's room no longer exists. Please make a new one!",
+                errors="That room no longer exists. Please make a new one!",
             )
 
     return render_template(

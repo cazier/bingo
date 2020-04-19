@@ -18,7 +18,7 @@
         <div class="row">
             <div class="col-md-12">
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                    <a class="navbar-brand" href="/">{{ game.title.title() }} @ {{ game.code.upper() }}</a>
+                    <a class="navbar-brand" href="/">{{ game.title.title() }}! @ {{ game.code.upper() }}</a>
                 </nav>
                 <hr>
                 <div>
@@ -55,10 +55,11 @@
         </div>
         {% if host %}
         <div class="row">
-            <div class="col-md-12">
+            <div class="col-md-12 text-center">
                 <div>
                     <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-success"
                         id="new">New Game</button>
+                    &nbsp;
                     <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-primary"
                         id="call">Call Number</button>
                 </div>
