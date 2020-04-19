@@ -8,7 +8,7 @@
 
     <title>Bingo!</title>
 
-    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/journal/bootstrap.min.css" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}" crossorigin="anonymous">
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
 </head>
@@ -20,29 +20,39 @@
                 <nav class="navbar navbar-expand-lg navbar-light bg-light">
                     <a class="navbar-brand" href="#">Bingo!</a>
                 </nav>
-                <hr>
-                <div>
-                    <div style="margin-left: auto; margin-right: auto;" id="callout">&nbsp;</div>
-                </div>
             </div>
         </div>
+        <br>
         <div class="row">
             <div class="col-md-12">
-                <div>
-                    <table>
-                        <tr>
-                            <td>
-                                <button type="button" style="margin-left: auto; margin-right: auto;"
-                                    class="btn btn-success" id="new">New Game</button>
-                            </td>
-                            <td>
-                                <button type="button" style="margin-left: auto; margin-right: auto;"
-                                    class="btn btn-primary" id="call">Call Number</button>
-
-                            </td>
-                        </tr>
-                    </table>
+                {% if errors %}
+                <div class="alert alert-danger" role="alert">
+                    {{ errors }}
                 </div>
+                {% endif %}
+
+                <table class="table">
+                    <tr>
+                        <td style="text-align: center; border-style: none;">
+                            <form action="/play" method="POST">
+                                <input type="hidden" name="host" id="host" value="true" />
+                                <button type="submit" style="margin-left: auto; margin-right: auto;"
+                                    class="btn btn-success" id="create">Create a Room</button>
+                            </form>
+                        </td>
+                        <td style="text-align: center; border-style: none;">
+                            <form action="/play" method="POST">
+                                <div class="input-group mb-3">
+                                    <input type="text" class="form-control" placeholder="ABCD" aria-label="Room Code"
+                                        aria-describedby="Room Code" size="4" name="room" id="room" required>
+                                    <div class="input-group-append">
+                                        <button class="btn btn-primary" type="submit" id="join">Join</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </td>
+                    </tr>
+                </table>
             </div>
         </div>
         <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
@@ -51,25 +61,6 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
-        <script>
-            var socket = io('http://' + document.domain + ':' + location.port);
-
-            $('button').click(function (event) {
-                if (this.id != '') {
-                    socket.emit(this.id);
-                } else {
-                    $(this).toggleClass("btn-dark");
-                };
-            })
-
-            socket.on('call', function (message) {
-                $('#callout').text(message.callout);
-            });
-
-            socket.on('new', function (message) {
-                window.location.reload(true);
-            });
-        </script>
 </body>
 
 </html>
