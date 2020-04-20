@@ -12,7 +12,7 @@ app.config["SECRET_KEY"] = os.getenv(
     key="SECRET_KEY", default="correctbatteryhorsestaple"
 )
 app.config["DEBUG"] = os.getenv(key="DEBUG_APP", default=False)
-socketio = flask_socketio.SocketIO(app)
+socketio = flask_socketio.SocketIO(app, cors_allowed_origins="*")
 
 GAMES = dict()
 
