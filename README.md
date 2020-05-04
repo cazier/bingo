@@ -16,7 +16,7 @@ Run in a "development" environment super easily!
 
 ```
 # Clone the files
-git clone https://git.cazier.xyz/bcazier/bingo
+git clone https://github.com/cazier/bingo
 
 # Enter the directory
 cd bingo
