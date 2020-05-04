@@ -45,14 +45,16 @@ class Bingo(object):
     def call_number(self) -> str:
         return "-".join((str(i) for i in self.numbers.pop()))
 
-    def check_answers(self) -> str:
-        return ", ".join(
-            [
-                "-".join((str(k) for k in i))
-                for i in self.callouts
-                if i not in self.numbers
-            ][::-1]
-        )
+    def check_answers(self) -> dict:
+        resp: dict = {i: list() for i in self.title}
+
+        for i in set(self.callouts).symmetric_difference(set(self.numbers)):
+            resp[i[0]].append(i[1])
+
+        for k, v in resp.items():
+            resp[k] = "<br>".join(str(i) for i in sorted(v))
+
+        return resp
 
 
 @app.route("/", methods=["GET"])

@@ -54,7 +54,7 @@
             </div>
         </div>
         {% if host %}
-        <div class="row">
+        <div class="row" style="margin-bottom: 16px;">
             <div class="col-md-12 text-center">
                 <div>
                     <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-danger"
@@ -70,8 +70,19 @@
             </div>
         </div>
         <div class="row">
-            <div class="col-md-12 text-center">
-                <div id="checks">&nbsp;</div>
+            <div class="col-md-12 text-center" id="checks" style="display:none">
+                <table class="table">
+                    <tr>
+                        {% for letter in game.title %}
+                        <th style="text-align: center;"> {{ letter }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for letter in game.title %}
+                        <td id="{{ letter }}"></td>
+                        {% endfor %}
+                    </tr>
+                </table>
             </div>
         </div>
         {% endif %}
@@ -101,7 +112,12 @@
             });
 
             socket.on('check', function (message) {
-                $('#checks').text(message.numbers);
+                console.log(message);
+                for (key in message.numbers) {
+                    $('#' + key).html(message.numbers[key]);
+                }
+
+                $('#checks').toggle();
             });
 
             socket.on('new', function (message) {
