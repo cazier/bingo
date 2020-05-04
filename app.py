@@ -71,7 +71,7 @@ def play():
             GAMES[code] = Bingo(code=code)
 
         elif (code := request.form.get("room", False)) :
-            code = code.upper()
+            code = code.strip().upper()
             if code not in GAMES.keys():
                 return render_template(
                     template_name_or_list="index.html",
