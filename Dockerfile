@@ -1,20 +1,13 @@
-FROM alpine:latest
+FROM python:3.9-alpine
 
-RUN apk add bash python3 python3-dev gcc musl-dev
-
-
-RUN addgroup -S www-data && adduser -S bingo -G www-data
+RUN adduser -S bingo -G www-data
 COPY . /home/bingo/app
 
 WORKDIR /home/bingo/app
 
-RUN python3 -m pip install --upgrade pip
-RUN python3 -m pip install -r requirements.txt
-
-RUN apk add --no-cache tini
-
-ENTRYPOINT ["/sbin/tini", "--"]
+RUN pip install pipenv
+RUN pipenv install --system
 
 EXPOSE 5000
 
-CMD [ "/usr/bin/python3", "/home/bingo/app/app.py" ]
+ENTRYPOINT [ "gunicorn", "bingo.web:app", "-w", "1", "-k", "uvicorn.workers.UvicornWorker", "-b", "0.0.0.0:5000" ]
