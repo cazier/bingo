@@ -4,16 +4,17 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-starlette = "*"
+gunicorn = "*"
 jinja2 = "*"
-uvicorn = "*"
 python-multipart = "*"
-websockets = "*"
 python-socketio = "*"
+starlette = "*"
+uvicorn = "*"
+websockets = "*"
 
 [dev-packages]
-pre-commit = "*"
 mypy = "*"
+pre-commit = "*"
 
 [requires]
 python_version = "3.9"

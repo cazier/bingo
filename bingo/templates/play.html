@@ -9,8 +9,8 @@
     <title>{{ game.title.title() }}!</title>
 
     <link href="https://stackpath.bootstrapcdn.com/bootswatch/4.4.1/flatly/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="{{ url_for('static', filename='custom.css') }}" crossorigin="anonymous">
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/socket.io-client@2/dist/socket.io.js"></script>
+    <link rel="stylesheet" href="{{ url_for('static', path='custom.css') }}" crossorigin="anonymous">
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js" integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H" crossorigin="anonymous"></script>
 </head>
 
 <body>
@@ -58,7 +58,7 @@
             <div class="col-md-12 text-center">
                 <div>
                     <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-danger"
-                        id="new">New Game</button>
+                        id="new" acti>New Game</button>
                     &nbsp;
                     <button type="button" style="margin-left: auto; margin-right: auto;" class="btn btn-warning"
                         id="call">Call
@@ -93,7 +93,7 @@
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
             crossorigin="anonymous"></script>
         <script>
-            var socket = io(location.protocol + '//' + document.domain + ':' + location.port);
+            const socket = io({transport: ['websockets'], path: "/ws"});
 
             document.addEventListener('DOMContentLoaded', function () {
                 socket.emit('join', '{{ game.code }}');
@@ -112,7 +112,6 @@
             });
 
             socket.on('check', function (message) {
-                console.log(message);
                 for (key in message.numbers) {
                     $('#' + key).html(message.numbers[key]);
                 }
@@ -121,7 +120,7 @@
             });
 
             socket.on('new', function (message) {
-                window.location = window.location;
+                window.location = window.origin + '/play?room={{ game.code }}&host={{ host }}';
             });
         </script>
 </body>

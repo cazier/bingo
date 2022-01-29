@@ -22,17 +22,20 @@ git clone https://github.com/cazier/bingo
 cd bingo
 
 # Install requirements
-python -m pip install -r requirements.txt
+pipenv install
 
 # (Optional) Set debug flag to see requests and details
 export DEBUG_APP=1
 
 # Run!
-python app.py
+uvicorn bingo.web:app --host 0.0.0.0 --port 5000
+
+# or with gunicorn (This only works with one worker at this time)
+gunicorn bingo.web:app -w 1 -k uvicorn.workers.UvicornWorker -b '0.0.0.0:5000'
 ```
 
 Alternatively, you can run it using Docker pretty easily too! This is how I run it in "production". Make sure to forward port 5000 from the container as needed!
 
 ```
-docker run -p 8080:5000 -it cazier/bingo:latest
+docker run -p 5000:5000 -it cazier/bingo:latest
 ```
