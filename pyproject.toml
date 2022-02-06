@@ -6,3 +6,28 @@ line_length = 119
 length_sort = true
 multi_line_output = 3
 include_trailing_comma = true
+
+[tool.poetry]
+name = "bingo"
+version = "2.0.0"
+description = "Play bingo online! Using websockets play an interactive online game of Bingo with friends!"
+authors = ["Brendan Cazier"]
+license = "MIT"
+
+[tool.poetry.dependencies]
+python = "^3.9"
+gunicorn = "^20.1.0"
+websockets = "^10.1"
+uvicorn = "^0.17.4"
+Jinja2 = "^3.0.3"
+python-socketio = "^5.5.1"
+python-multipart = "^0.0.5"
+starlette = "^0.18.0"
+
+[tool.poetry.dev-dependencies]
+pre-commit = "^2.17.0"
+mypy = "^0.931"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
