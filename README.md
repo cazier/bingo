@@ -22,7 +22,7 @@ git clone https://github.com/cazier/bingo
 cd bingo
 
 # Install requirements
-pipenv install
+poetry install
 
 # (Optional) Set debug flag to see requests and details
 export DEBUG_APP=1

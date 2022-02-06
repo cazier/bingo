@@ -18,5 +18,3 @@ repos:
     rev: 31657e
     hooks:
     -   id: poetry-lock
-    -   id: poetry-export
-        args: ["-f", "requirements.txt", "-o", "requirements.txt"]
